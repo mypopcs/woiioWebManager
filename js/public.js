@@ -9,22 +9,20 @@ class pub{
     getRootDomain(url) {
         return url.replace(/https?:\/\//, '').replace(/\?.+/, '').replace(/\/$/, '')
     }
-    // urlRegex(url) {
-    //     //replace() 方法用于在字符串中用一些字符替换另一些字符，或替换一个与正则表达式匹配的子串。
-    //     return (url + '').replace(/(&amp;)/g, '&').replace(/(&lt;)/g, '').replace(/(&gt;)/g, '').replace(/(&quot;)/g, '"').replace(/(&#39;)/g, '\'').replace(/(&#58;)/g, ':').replace(/(&#x2F;)/g, '/')
-    // }
-    
-    // getTitleFormSite(url, b) {
-    //     const newUrl = this.addHttp(url), http = new XMLHttpRequest;
-    //     // onload 请求成功完成时触发后面函数
-    //     http.onload = () => {
-    //         //exec() 方法用于检索字符串中的正则表达式的匹配。
-    //         const regRule = /(<title>)\s*(.+)\s*(<\/title>)/, runReg = regRule.exec(http.responseText) || [], url = runReg[2] ? urlRegex(runReg[2]) : '';
-    //         b(url)
-    //     }, http.onerror = () => b(''), http.open('GET', newUrl, !0), http.send()
-    // }
+    //判断是否为域名地址
+    isValidUrl(str){
+        var pattern = new RegExp(
+            '^(https?:\\/\\/)?'+ // protocol（协议)
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+			'((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+			'(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+			'(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+			'(\\#[-a-z\\d_]*)?$','i' // fragment locator
+        );
+        return !!pattern.test(str);
+    }
 
-    //input
+    /*---------------输入框自动填写标题-----------------*/
     changeInputUrl(){
         //获取输入的网址
         const urlValue = elById('form_url').value;
@@ -39,14 +37,100 @@ class pub{
         urlValue, chrome.history.search({text: '',maxResults: 1e3}, (history) => {
             // 通过find 获取到第一个匹配的数据信息
             const findResult = history.find((history) => history.url === urlValue), FormTitle = $('#form_title');
-            //如果有值，并且 title 有内容就执行val赋值，没有就模拟访问获取值
-            findResult && findResult.title ? FormTitle.val(findResult.title) : console.log('请输入已访问过网址')
-            // findResult && findResult.title ? FormTitle.val(findResult.title) : this.getTitleFormSite(urlValue, (history) => {
-            //     const findResult = history ? history : pubModel.getRootDomain(urlValue);
-            //     FormTitle.val(findResult)
-            // })
-        })
+            /*
+             * ? : 三元运算符判断，?前为判断式，:前为真取值，后为假取值
+             * 如果有值，并且 title 有内容就执行val赋值，没有就模拟访问获取值
+             */
+            findResult && findResult.title ? FormTitle.val(findResult.title) : FormTitle.val('请输入已访问过网址')
+        }), this.PreviewInit()
 
+    }
+
+    /*---------------自动清空内容-----------------*/
+    clearForm(){
+        elById('form_url').value = '',
+        elById('form_title').value = '',
+        elById('web_preview').style.backgroundImage = 'none'
+    }
+
+    /*---------------生成缩略图-----------------*/
+
+    //图片尺寸调整
+    resizeImg(url, urlFunction) {
+        let Img = new Image;
+        // console.log(c)
+        Img.src = url, Img.onload = () => {
+            //Math 对象用于执行数学任务, 返回小于等于x的最大整数:
+            var MathF = Math.floor;
+            const canvasEle = document.createElement('canvas');
+            let e, f, g = MathF(Img.width / 280);
+            //判断图的尺寸是否大于 2
+            2 <= g ? (5 <= g && (g = MathF(g / 1.3)), 1 & g && g--, e = Img.width / g, f = Img.height * (e / Img.width), 140 > f && (e *= 140 / f, f = 140)) : (e = Img.width, f = Img.height), canvasEle.width = e, canvasEle.height = f;
+            const h = canvasEle.getContext('2d');
+            h.drawImage(Img, 0, 0, e, f);
+
+            //将图片转换为Base64编码
+            const ImgBs64 = canvasEle.toDataURL('image/png');
+            urlFunction(ImgBs64)
+        }, Img.onerror = () => {
+            urlFunction(null)
+        }
+    }
+    //隐藏式截图方法
+    hiddenCapture(urlVal, urlFunction) {
+        //创建（打开）一个新的浏览器窗口，可以提供大小、位置或默认 URL 等可选参数, 然后执行后面函数
+        chrome.windows.create({
+            url: urlVal,
+            width: 10,
+            height: 10,
+            left: 1e5,
+            top: 1e5,
+            type: 'popup'
+        }, (urlVal) => {
+            //判断有网址信息后关闭窗口
+			if (!urlVal.tabs || !urlVal.tabs.length) return chrome.windows.remove(urlVal.id), urlFunction(null);
+            const webTabId = urlVal.tabs[0].id;
+            let d;
+            //修改标签页属性，updateProperties 中未指定的属性保持不变。
+            chrome.tabs.update(webTabId, {muted: !0});
+            const setTime = setTimeout(() => {
+                //clearInterval()方法能够取消setInterval()方法设置的定时器
+                clearInterval(d), chrome.windows.remove(urlVal.id), urlFunction(null)
+            }, 6e4);
+            d = setInterval(() => {
+                //chrome.tabs.get获得指定标签页的有关详情
+                chrome.tabs.get(webTabId, (webTabId) => {
+                   'complete' === webTabId.status && (clearInterval(d), clearTimeout(setTime), setTimeout(() => {
+					   chrome.windows.update(urlVal.id, {
+							width: 1200,
+							height: 800,
+							left: 1e6,
+							top: 1e6 
+						}, () => {
+							setTimeout(() => {
+                            //chrome自带截屏方法(chrome.tabs.captureVisibleTab)，回调函数返回图片类型和数据信息
+							chrome.tabs.captureVisibleTab(urlVal.id, (webTabId) => {
+								chrome.windows.remove(urlVal.id, () => urlFunction(webTabId))
+							})
+							}, 500)
+						});
+                    }, 200))
+                })
+            }, 200)
+        })
+    }
+    
+    //生成预览
+    createPreview(url, b) {
+        this.hiddenCapture(url, (url) => this.resizeImg(url, (url) => b(url)))
+    }
+
+    //预览调用
+    PreviewInit() {
+        const urlVal = elById('form_url').value, urlInit = this.addHttp(urlVal);
+        urlVal && urlInit && (this.createPreview(urlInit, (urlVal) => {
+            elById('web_preview').style.backgroundImage = `url(${urlVal})`
+        }))
     }
 }
 
