@@ -14,11 +14,23 @@ class newTab {
         doc.on('click', '#save_bookmark_btn', () => dataHand.saveBookmark())
     }
 
+    //缩略图
+    // initPreview() {
+    //     const a = dataHand.bookmarks.find((a) => !1 === a.initPreview);
+    //     a && this.createPreview(a.url, (b) => {
+    //         b && (a.preview = `url(${b})`), a.initPreview = !0, dataHand.saveData(), dataHand.renderTiles(), this.initPreview()
+    //     })
+    // }
+
     //总入口
     init(){
+        dataHand.renderTiles()
         this.initHandlers()
+        // this.initPreview()
     }
 }
 var index = new newTab;
 
 index.init()
+
+export default index

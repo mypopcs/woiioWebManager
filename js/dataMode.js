@@ -1,7 +1,35 @@
 import pubModel from "./public.js";
+import index from "./index.js";
 
 //获取 ID 的公共方法
 const elById = (IdName) => document.getElementById(IdName);
+
+const _PRELOAD_WRAPPER = 	'<div id="preloader-in-modal" class="preloader-wrapper active">' + 
+								'<div class="spinner-layer spinner-blue-only">' +
+									'<div class="circle-clipper left">' + 
+										'<div class="circle"></div>' + 
+									'</div>' + 
+									'<div class="gap-patch">' + 
+										'<div class="circle"></div>' + 
+									'</div>' + 
+									'<div class="circle-clipper right">' + 
+										'<div class="circle"></div>' + 
+									'</div>' + 
+								'</div>' + 
+							'</div>';
+
+const _CONTEXT_MENU_BOX =	'<div class="context-menu-box">' + 
+    '<button class="context-menu-button icon"></button>' + 
+    '<div class="context-menu">' + 
+        '<ul role="menu" class="context-menu-list">' + 
+            '<li class="context-menu-item open-in-new-tab"><span class="icon icon-spacer icon-new-window"></span>新标签页打开</li>' + 
+            '<li class="context-menu-item open-in-private"><span class="icon icon-spacer icon-new-window-private"></span>隐私模式打开</li>' + 
+            '<li class="separator"></li>' + 
+            '<li class="context-menu-item edit-tile"><span class="icon icon-spacer icon-edit"></span>编辑</li>' + 
+            '<li class="context-menu-item remove-tile"><span class="icon icon-spacer icon-delete"></span>删除</li>' + 
+        '</ul>' + 
+    '</div>' + 
+'</div>';
 
 class datahand {
 
@@ -15,7 +43,8 @@ class datahand {
         },
         this.bookmarks = [],
         this.history = [],
-        this.ref = ''
+        this.ref = '',
+        this.getData()
     }
 
     /*---------------存储数据方法-----------------*/
@@ -41,6 +70,8 @@ class datahand {
             if (bookmarkList.ref) {
                 this.ref = bookmarkList.ref
             }
+            //执行一次数据获取
+            index.init()
         })
     }
 
@@ -53,18 +84,26 @@ class datahand {
             preview: elById('web_preview').style.backgroundImage.replace(/"/g, ''),
             initPreview: !0
         };
-        console.log(this.bookmarks)
 
         if(initBookmarkValue.url && pubModel.isValidUrl(initBookmarkValue.url)){
             this.bookmarks.push(initBookmarkValue),
             this.saveData(),
+            this.renderTiles(),
             //保存后清空内容
             pubModel.clearForm()
-            console.log('保存成功')
         } else {
             alert('错误')
         }
         
+    }
+
+    /*---------------获取数据方法-----------------*/
+    renderTiles() {
+        let a = '';
+        this.bookmarks.forEach((b) => {
+            a += `<div class="tile-box"><a class="tile" href="${b.url}" title="${b.title}"><div class="head"><div class="favicon"><img src="http://www.google.com/s2/favicons?domain=${b.url}"></div><div class="title">${b.title}</div>${_CONTEXT_MENU_BOX}</div><div class="body" style="background-image: ${b.preview||'none'};">${b.initPreview?'':_PRELOAD_WRAPPER}</div></a></div>`
+        });
+        elById('tiles')['innerHTML'] = a
     }
 }
 

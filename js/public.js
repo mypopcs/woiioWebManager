@@ -42,7 +42,8 @@ class pub{
              * 如果有值，并且 title 有内容就执行val赋值，没有就模拟访问获取值
              */
             findResult && findResult.title ? FormTitle.val(findResult.title) : FormTitle.val('请输入已访问过网址')
-        }), this.PreviewInit()
+        }),
+        this.PreviewInit()
 
     }
 
@@ -132,6 +133,18 @@ class pub{
             elById('web_preview').style.backgroundImage = `url(${urlVal})`
         }))
     }
+
+    // //右键？
+    // fixContextMenu() {
+    //     setTimeout(() => {
+    //         const a = $(document).width();
+    //         $('#tiles').find('.tile-box').each((b, c) => {
+    //             const d = $(c);
+    //             300 > a - d.offset().left - d.width() && d.find('.context-menu-box').addClass('right-side')
+    //         })
+    //     }, 500)
+    // }
+
 }
 
 const pubModel = new pub()
