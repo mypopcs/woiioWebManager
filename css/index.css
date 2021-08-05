@@ -1,0 +1,11 @@
+.preview{
+    width: 140px;
+    height: 87px;
+    background-position: 50% 50%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: inline-block;
+    border: 1px solid #dadada;
+    position: relative;
+    border-radius: 3px; 
+}
