@@ -11,7 +11,10 @@ class newTab {
     initHandlers(){
         const doc = $(document.body)
         doc.on('change', '#form_url', () => pubModel.changeInputUrl()),
-        doc.on('click', '#save_bookmark_btn', () => dataHand.saveBookmark())
+        doc.on('click', '#save_bookmark_btn', () => dataHand.saveBookmark()),
+        doc.on('click', '#edit_tile', (a) => dataHand.showEditModal(a)),
+        doc.on('click', '#remove_tile', (a) => dataHand.showRemoveModal(a)),
+        doc.on('click', '#remove-bookmark-btn', (a) => dataHand.removeBookmark(a))
     }
 
     //缩略图
@@ -24,7 +27,7 @@ class newTab {
 
     //总入口
     init(){
-        dataHand.renderTiles()
+        dataHand.renderTiles(),
         this.initHandlers()
         // this.initPreview()
     }
