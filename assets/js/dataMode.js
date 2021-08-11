@@ -101,7 +101,8 @@ class datahand {
     renderTiles() {
         let a = '';
         this.bookmarks.forEach((b) => {
-            a += `<div class="tile-box"><a class="tile" href="${b.url}" title="${b.title}"><div class="head"><div class="favicon"><img src="http://www.google.com/s2/favicons?domain=${b.url}"></div><div class="title">${b.title}</div>${_CONTEXT_MENU_BOX}</div><div class="preview" style="background-image: ${b.preview||'none'};">${b.initPreview?'':_PRELOAD_WRAPPER}</div></a></div>`
+            // a += `<div class="tile-box"><a class="tile" href="${b.url}" title="${b.title}"><div class="head"><div class="favicon"><img src="http://www.google.com/s2/favicons?domain=${b.url}"></div><div class="title">${b.title}</div>${_CONTEXT_MENU_BOX}</div><div class="preview" style="background-image: ${b.preview||'none'};">${b.initPreview?'':_PRELOAD_WRAPPER}</div></a></div>`
+            a += `<div class="col-xl-4"><div class="card card-xl-stretch px-4 py-4"><a href="${b.url}" title="${b.title}"><div class="head"><div class="favicon"><img src="http://www.google.com/s2/favicons?domain=${b.url}"></div><div class="title">${b.title}</div>${_CONTEXT_MENU_BOX}</div><div class="preview" style="background-image: ${b.preview||'none'};">${b.initPreview?'':_PRELOAD_WRAPPER}</div></a></div></div>`
         });
         elById('tiles')['innerHTML'] = a
     }

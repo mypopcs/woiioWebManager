@@ -1,40 +1,187 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="icon" type="image/png" sizes="32x32" href="../images/64.png">
-    <link rel="stylesheet" href="/css/index.css">
-    <title>Woiio web manager</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Woiio web manager - Woiio</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/64.png">
+    <link rel="stylesheet" href="../assets/css/bulma.min.css">
+    <link rel="stylesheet" href="../assets/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="../assets/css/index.css">
 </head>
-<body>
-    <div class="web-input">
-        <div>
-            <label for="form-url">URL:</label>
-            <input type="text" id="form_url">
+
+<body id="page-top">
+    <div id="app" class="app">
+        <div id="header" class="app-header">
+            <div class="level px-5">
+                <div class="brand level-left">
+                    <!-- 菜单按钮 -->
+                    <div class="desktop-toggler level-item">
+                        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" style="display:flex">
+                            <span aria-hidden="true"></span>
+                            <span aria-hidden="true"></span>
+                            <span aria-hidden="true"></span>
+                        </a>
+                        <!-- <icon class="mdi mdi-menu mdi-18px"></icon> -->
+                    </div>
+                    <!-- 网站 logo -->
+                    <a href="#" class="brand-logo level-item">
+                        <img src="../assets/img/64.png" alt="woiio logo">
+                    </a>
+                    <!-- 搜索 -->
+                    <div class="search ml-130">
+                        <form class="level-item control has-icons-left" method="POST" name="header_search_form">
+                            <input type="text" class="form-control input" placeholder="Search">
+                            <div class="icon is-left">
+                                <i class="mdi mdi-magnify mdi-18px"></i>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="bell level-right">
+                    <!-- 通知 -->
+                    <div class="bell level-item">
+                        <a href="#" data-bs-toggle="dropdown" class="bell-link" data-bs-display="static">
+                            <div class="icon">
+                                <i class="mdi mdi-bell mdi-24px"></i>
+                            </div>
+                            <div class="bell-label">3</div>
+                        </a>
+                    </div>
+                    <!-- 个人信息 -->
+                    <div class="user-info level-item">
+                        <a href="#" data-bs-toggle="dropdown" data-bs-display="static" class="level">
+                            <figure class="image is-32x32 online">
+                                <img src="../assets/img/avatars/avatar1.jpeg" alt="Kim@woiio.com header img" class="is-rounded">
+                            </figure>
+                            <div class="user-text level-right">Kim@woiio.com</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div>
-            <label for="form-url">title:</label>
-            <input type="text" id="form_title">
+        <div id="sidebar" class="app-sidebar">
+            <div class="app-sidebar-content" data-scrollbar="true" data-height="100%">
+                <div class="menu">
+                    <div class="menu-header">Navigation</div>
+                    <div class="menu-item active">
+                        <a href="#" class="menu-link">
+                            <span class="icon menu-icon">
+                                <i class="mdi mdi-laptop-chromebook mdi-18px"></i>
+                            </span>
+                            <span class="menu-text">Dashboard</span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="#" class="menu-link">
+                            <span class="icon menu-icon">
+                                <i class="mdi mdi-chart-pie mdi-18px"></i>
+                            </span>
+                            <span class="menu-text">Analytics</span>
+                        </a>
+                    </div>
+                    <div class="menu-item has-sub">
+                        <a href="#" class="menu-link">
+                            <span class="icon menu-icon">
+                                <i class="mdi mdi-email mdi-18px"></i>
+                                <span class="menu-icon-label">6</span>
+                            </span>
+                            <span class="menu-text">Email</span>
+                            <span class="icon">
+                                <i class="mdi mdi-chevron-down mdi-18px"></i>
+                            </span>
+                        </a>
+                        <div class="menu-submenu">
+                            <div class="menu-item">
+                                <a href="#" class="menu-link">
+                                    <span class="menu-text">Inbox</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="#" class="menu-link">
+                                    <span class="menu-text">Compose</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div id="web_preview" class="preview"></div>
-        <button id="save_bookmark_btn">保存</button>
-    </div>
-    <div class="web-list">
-        <div id="tiles"></div>
-    </div>
-    <div id="remove-bookmark-modal" class="modal">
-        <div class="modal-content">
-            <div class="block-title"><div>删除网站</div></div>
-            <p>是否要删除此网站？</p>
+        <div id="content" class="app-content">
+            <div class="toolbar level px-5 py-4 level">
+                <div class="level-left">
+                    <div class="items-start">
+                        <h1 class="page-header">Hi, Sean.</h1>
+                        <nav class="breadcrumb has-text-weight-medium" aria-label="breadcrumbs">
+                            <ul>
+                                <li class="text-muted">
+                                    <a href="#" class="text-muted">Home</a>
+                                </li>
+                                <li class="text-muted">
+                                    <a href="#" class="text-muted">Dashboard</a>
+                                </li>
+                                <li class="is-active">
+                                    <a href="#" class="text-dark" aria-current="page">Extended</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <button id="new_web" class="button level-item button-big">Invite a Friend</button>
+                    <button class="button is-primary level-item button-big">New Project</button>
+                </div>
+            </div>
+            <div class="post px-5">
+                <div id="tiles" class="row g-xl-8">
+                    <!-- <div class="col-xl-4">
+                        <div class="card card-xl-stretch px-4 py-4">123</div>
+                    </div> -->
+                </div>
+            </div>
         </div>
-        <div class="modal-footer">
-            <button class="remove-bookmark-btn-no modal-action modal-close waves-effect waves-green btn">取消</button>
-            <button id="remove-bookmark-btn" class="modal-action modal-close waves-effect waves-green btn">删除</button>
+        <div id="add_dialog" class="modal fade" role="dialog">
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <h4 class="modal-card-title">Invite a Friend</h4>
+                    <button id="close_dialog" class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body is-flex">
+                    <!-- Content ... -->
+                    <div class="website-in mr-4">
+                        <div class="field">
+                            <label class="label" for="form-url">URL:</label>
+                            <div class="control">
+                                <input class="input" type="text" id="form_url" placeholder="输入网址">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="form-url">Title:</label>
+                            <div class="control">
+                                <input class="input" type="text" id="form_title" placeholder="输入网址标题">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="website-out">
+                        <label class="label" for="form-url">Web Preview:</label>
+                        <div id="web_preview" class="preview d-flex"></div>
+                    </div>
+                </section>
+                <footer class="modal-card-foot">
+                  <button id="save_bookmark_btn" class="button is-success">Save changes</button>
+                  <button class="button">Cancel</button>
+                </footer>
+            </div>
+            <div class="modal-background fade show"></div>
         </div>
+        <a href="#" data-click="scroll-top" class="btn-scroll-top">
+            <i class="fa fa-arrow-top"></i>
+        </a>
     </div>
 
-    <script src="/js/libs/jquery.min.js"></script>
-    <script src="/js/index.js" type="module"></script>
+    <script src="../assets/js/libs/jquery.min.js"></script>
+    <script src="../assets/js/index.js" type="module"></script>
 </body>
 </html>
