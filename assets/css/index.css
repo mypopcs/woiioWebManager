@@ -250,7 +250,7 @@ a:hover {
 
 /*-----------主内容-----------*/
 .app-content {
-    margin-left: 240px;
+    /* margin-left: 240px; */
     position: relative;
     min-height: 100%;
 }
@@ -294,21 +294,55 @@ a:hover {
     padding-left: calc(var(--bs-gutter-x) * .5);
     margin-top: var(--bs-gutter-y);
 }
-@media screen and (min-width:1200px){
-    .g-xl-8, .gy-xl-8 {
-        --bs-gutter-y: 2rem;
-    }
-    .g-xl-8, .gx-xl-8 {
-        --bs-gutter-x: 2rem;
-    }
-    .col-xl-4{
-        flex: 0 0 auto;
-        width: 25%;
-    }
+.bookmark-info .title{
+    width: 100%;
+    overflow: hidden;
+    font-size: 1rem;
+    text-overflow: ellipsis;
+}
+.context-menu-box{
+    position: relative;
+}
+.context-menu-box .context-menu{
+    position: absolute;
+    top: -10px;
+    right: 0;
+    z-index: 1000;
+}
+.card-image{
+    position: relative;
+}
+.card-menu .button{
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    box-shadow: 0 3px 8px 0 rgba(0, 0, 0, .2);
+    opacity: 0;
+}
+.col-xl-4:hover .button{
+    opacity: 1;
+}
+.card-content .media{
+    align-items: center;
+    overflow: hidden;
+}
+.media-content .title{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.card-menu .dropdown-menu{
+    top: 3.5rem;
+    left:auto;
+    right: 1rem;
 }
 
+
 /*-----------弹出窗-----------*/
-.modal.show{
+.hide{
+    display: none;
+}
+.modal.show, .dropdown-menu.show{
     display: block;
 }
 .modal-background{
@@ -368,4 +402,27 @@ a:hover {
     border: 1px solid #dadada;
     position: relative;
     border-radius: 3px; 
+}
+
+@media screen and (min-width:1200px) and (max-width: 1680px){
+    .g-xl-8, .gy-xl-8 {
+        --bs-gutter-y: 2rem;
+    }
+    .g-xl-8, .gx-xl-8 {
+        --bs-gutter-x: 2rem;
+    }
+    .col-xl-4 {
+        flex: 0 0 auto;
+        width: calc(100% / 5);
+    }
+}
+@media screen and (min-width:1680px) and (max-width: 1920px){
+    .col-xl-4 {
+        width: calc(100% / 7)
+    }
+}
+@media screen and (min-width:1080px) and (max-width: 1280px){
+    .col-xl-4 {
+        width: calc(100% / 5)
+    }
 }

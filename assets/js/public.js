@@ -56,19 +56,31 @@ class pub{
 
     /*---------------生成缩略图-----------------*/
 
-    //图片尺寸调整
+    //创建 canvas 画布
     resizeImg(url, urlFunction) {
         let Img = new Image;
         // console.log(c)
         Img.src = url, Img.onload = () => {
-            //Math 对象用于执行数学任务, 返回小于等于x的最大整数:
-            var MathF = Math.floor;
+            /*
+            * Math 对象用于执行数学任务, 返回小于等于x的最大整数，floor(x)对数进行下舍入，小于等于 x，且与 x 最接近的整数。。
+            */
+            var smallInt = Math.floor;
+            //新建 canvas 窗口
             const canvasEle = document.createElement('canvas');
-            let e, f, g = MathF(Img.width / 280);
+            let imgWidth, imgHeight, g = smallInt(Img.width / 280);
             //判断图的尺寸是否大于 2
-            2 <= g ? (5 <= g && (g = MathF(g / 1.3)), 1 & g && g--, e = Img.width / g, f = Img.height * (e / Img.width), 140 > f && (e *= 140 / f, f = 140)) : (e = Img.width, f = Img.height), canvasEle.width = e, canvasEle.height = f;
+            2 <= g
+                ? (5 <= g && (g = smallInt(g / 1.3)),
+                    1 & g && g--, imgWidth = Img.width / g,
+                    imgHeight = Img.height * (imgWidth / Img.width),
+                    140 > imgHeight && (imgWidth *= 140 / imgHeight,
+                        imgHeight = 140)
+                  )
+                : (imgWidth = Img.width, imgHeight = Img.height),
+                    canvasEle.width = imgWidth,
+                    canvasEle.height = imgHeight;
             const h = canvasEle.getContext('2d');
-            h.drawImage(Img, 0, 0, e, f);
+            h.drawImage(Img, 0, 0, imgWidth, imgHeight);
 
             //将图片转换为Base64编码
             const ImgBs64 = canvasEle.toDataURL('image/png');
@@ -86,42 +98,56 @@ class pub{
             height: 10,
             left: 1e5,
             top: 1e5,
-            type: 'popup'
+            type: 'popup' //指定要创建的浏览器窗口类型
         }, (urlVal) => {
-            //判断有网址信息后关闭窗口
-			if (!urlVal.tabs || !urlVal.tabs.length) return chrome.windows.remove(urlVal.id), urlFunction(null);
-            const webTabId = urlVal.tabs[0].id;
-            let d;
-            //修改标签页属性，updateProperties 中未指定的属性保持不变。
-            chrome.tabs.update(webTabId, {muted: !0});
-            const setTime = setTimeout(() => {
-                //clearInterval()方法能够取消setInterval()方法设置的定时器
-                clearInterval(d), chrome.windows.remove(urlVal.id), urlFunction(null)
-            }, 6e4);
-            d = setInterval(() => {
-                //chrome.tabs.get获得指定标签页的有关详情
-                chrome.tabs.get(webTabId, (webTabId) => {
-                   'complete' === webTabId.status && (clearInterval(d), clearTimeout(setTime), setTimeout(() => {
-					   chrome.windows.update(urlVal.id, {
-							width: 1200,
-							height: 800,
-							left: 1e6,
-							top: 1e6 
-						}, () => {
-							setTimeout(() => {
-                            //chrome自带截屏方法(chrome.tabs.captureVisibleTab)，回调函数返回图片类型和数据信息
-							chrome.tabs.captureVisibleTab(urlVal.id, (webTabId) => {
-								chrome.windows.remove(urlVal.id, () => urlFunction(webTabId))
-							})
-							}, 500)
-						});
-                    }, 200))
-                })
-            }, 200)
+            //如果没有网址传入就关闭浏览器窗口
+			if (!urlVal.tabs || !urlVal.tabs.length){
+                //移除（关闭）一个窗口以及其中的所有标签页
+                return chrome.windows.remove(urlVal.id),
+                urlFunction(null);
+            } else {
+                //标签页标识符
+                const webTabId = urlVal.tabs[0].id;
+                //更改属性，设置静音
+                chrome.tabs.update(webTabId, {muted: !0});
+                let d;
+                /* 后面未指定的属性保持不变。
+                * muted 属性设置或返回音频/视频是否应该被静音
+                */
+                //setInterval() 方法可按照指定的周期（以毫秒计）来调用函数或计算表达式。方法会不停地调用函数，直到 clearInterval() 被调用或窗口被关闭
+                d = setInterval(() => {
+                    //chrome.tabs.get获得指定标签页的有关详情
+                    chrome.tabs.get(webTabId, (webTabId) => {
+                    'complete' === webTabId.status && (clearInterval(d), clearTimeout(setTime), setTimeout(() => {
+                        chrome.windows.update(urlVal.id, {
+                                width: 1200,
+                                height: 800,
+                                left: 1e6,
+                                top: 1e6 
+                            }, () => {
+                                //等待500毫秒开始截图
+                                setTimeout(() => {
+                                //chrome自带截屏方法(chrome.tabs.captureVisibleTab)，回调函数返回图片类型和数据信息
+                                chrome.tabs.captureVisibleTab(urlVal.id, (webTabId) => {
+                                    //截图后，如果页面加载完成就关闭窗口
+                                    chrome.windows.remove(urlVal.id,() => urlFunction(webTabId))
+                                })
+                                }, 200)
+                            });
+                        }, 20))
+                    })
+                }, 20)
+                const setTime = setTimeout(() => {
+                    //clearInterval()方法能够取消setInterval()方法设置的定时器
+                    clearInterval(d),
+                    chrome.windows.remove(urlVal.id),
+                    urlFunction(null)
+                }, 6e4);
+            }
         })
     }
     
-    //生成预览
+    //调整预览图图片尺寸
     createPreview(url, b) {
         this.hiddenCapture(url, (url) => this.resizeImg(url, (url) => b(url)))
     }
@@ -130,20 +156,27 @@ class pub{
     PreviewInit() {
         const urlVal = elById('form_url').value, urlInit = this.addHttp(urlVal);
         urlVal && urlInit && (this.createPreview(urlInit, (urlVal) => {
-            elById('web_preview').style.backgroundImage = `url(${urlVal})`
+            elById('web_preview').src = `${urlVal}`
         }))
     }
-
-    // //右键？
-    // fixContextMenu() {
-    //     setTimeout(() => {
-    //         const a = $(document).width();
-    //         $('#tiles').find('.tile-box').each((b, c) => {
-    //             const d = $(c);
-    //             300 > a - d.offset().left - d.width() && d.find('.context-menu-box').addClass('right-side')
-    //         })
-    //     }, 500)
-    // }
+    //打开菜单
+    openCardMenu(eve){
+        eve.preventDefault()
+        eve.stopPropagation(); //阻止事件冒泡
+        var dropdownTag = $(eve.currentTarget).siblings('.dropdown-menu')//siblings() 方法返回被选元素的所有同级元素。
+        var flag = true
+        $(dropdownTag).show()
+        //bind() 方法为被选元素添加一个或多个事件处理程序，并规定事件发生时运行的函数
+        $(document).bind("click", (e) => {
+            //target 事件属性返回触发事件的元素。
+            var target = $(e.target)
+            //closest() 方法获得匹配选择器的第一个祖先元素，从当前元素开始沿 DOM 树向上。
+            if(target.closest(dropdownTag).length == 0 && flag == true){
+                $(dropdownTag).hide()
+                flag = false
+            }
+        })
+    }
 
 }
 

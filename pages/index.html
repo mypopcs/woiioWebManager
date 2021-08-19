@@ -62,7 +62,7 @@
                 </div>
             </div>
         </div>
-        <div id="sidebar" class="app-sidebar">
+        <div id="sidebar" class="app-sidebar hide">
             <div class="app-sidebar-content" data-scrollbar="true" data-height="100%">
                 <div class="menu">
                     <div class="menu-header">Navigation</div>
@@ -109,7 +109,7 @@
                 </div>
             </div>
         </div>
-        <div id="content" class="app-content">
+        <div id="content" class="ml-4 app-content">
             <div class="toolbar level px-5 py-4 level">
                 <div class="level-left">
                     <div class="items-start">
@@ -130,8 +130,8 @@
                     </div>
                 </div>
                 <div class="level-right">
-                    <button id="new_web" class="button level-item button-big">Invite a Friend</button>
-                    <button class="button is-primary level-item button-big">New Project</button>
+                    <button id="new_web" class="button is-primary level-item button-big">添加新书签</button>
+                    <!-- <button class="button level-item button-big">New Project</button> -->
                 </div>
             </div>
             <div class="post px-5">
@@ -145,36 +145,51 @@
         <div id="add_dialog" class="modal fade" role="dialog">
             <div class="modal-card">
                 <header class="modal-card-head">
-                    <h4 class="modal-card-title">Invite a Friend</h4>
-                    <button id="close_dialog" class="delete" aria-label="close"></button>
+                    <h4 id="add_title" class="modal-card-title">添加新书签</h4>
+                    <!-- <button id="close_dialog" class="delete" aria-label="close"></button> -->
                 </header>
                 <section class="modal-card-body is-flex">
                     <!-- Content ... -->
                     <div class="website-in mr-4">
                         <div class="field">
-                            <label class="label" for="form-url">URL:</label>
+                            <label class="label" for="form-url">网址:</label>
                             <div class="control">
                                 <input class="input" type="text" id="form_url" placeholder="输入网址">
                             </div>
                         </div>
                         <div class="field">
-                            <label class="label" for="form-url">Title:</label>
+                            <label class="label" for="form-url">标题:</label>
                             <div class="control">
                                 <input class="input" type="text" id="form_title" placeholder="输入网址标题">
                             </div>
                         </div>
                     </div>
                     <div class="website-out">
-                        <label class="label" for="form-url">Web Preview:</label>
-                        <div id="web_preview" class="preview d-flex"></div>
+                        <label class="label" for="form-url">网站预览图:</label>
+                        <img id="web_preview" class="preview d-flex">
                     </div>
                 </section>
                 <footer class="modal-card-foot">
-                  <button id="save_bookmark_btn" class="button is-success">Save changes</button>
-                  <button class="button">Cancel</button>
+                  <button id="save_bookmark_btn" class="button is-success">添加书签</button>
+                  <button class="button cancel-btn">取消</button>
                 </footer>
             </div>
             <div class="modal-background fade show"></div>
+        </div>
+        <div id="delete_confire_dialog" class="modal fade">
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <h4 class=modal-card-title>是否确认删除？</h4>
+                    <!-- <button id="close_dialog" class="delete" aria-label="close"></button> -->
+                </header>
+                <section class="modal-card-body is-flex">
+                    <p>此操作将从您的存储中彻底删除数据，请确认是否继续？</p>
+                </section>
+                <footer class="modal-card-foot">
+                    <button id="remove_confire_btn" class="button">确认</button>
+                    <button class="button cancel-btn is-primary">取消</button>
+                </footer>
+            </div>
         </div>
         <a href="#" data-click="scroll-top" class="btn-scroll-top">
             <i class="fa fa-arrow-top"></i>
