@@ -40,6 +40,7 @@ class datahand {
 
     //constructor方法，这就是构造方法，而this关键字则代表实例对象
     constructor(){
+        //配置信息
         this.data = {
             version: 103,
             titlesCount : 0,
@@ -90,6 +91,8 @@ class datahand {
             url: pubModel.addHttp(elById('form_url').value),
             title: elById('form_title').value,
             preview: elById('web_preview').src.replace(/"/g, ''),
+            tag: [],
+            classify: {},
             initPreview: !0
         };
         if(initBookmarkValue.url && pubModel.isValidUrl(initBookmarkValue.url)){
@@ -115,7 +118,9 @@ class datahand {
                             <div class="card">
                                 <div class="card-image">
                                     <figure class="image is-4by3">
-                                        <img class="preview" src="${b.preview||'none'}" alt="${b.title}">
+                                        <a href="${b.url}">
+                                            <img class="preview" src="${b.preview||'none'}" alt="${b.title}">
+                                        </a>
                                     </figure>
                                     ${_CONTEXT_MENU_BOX}
                                 </div>

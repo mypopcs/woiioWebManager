@@ -20,19 +20,11 @@ class newTab {
         doc.on('click', '.card-menu-button', (event) => pubModel.openCardMenu(event))
     }
 
-    //缩略图
-    // initPreview() {
-    //     const a = dataHand.bookmarks.find((a) => !1 === a.initPreview);
-    //     a && this.createPreview(a.url, (b) => {
-    //         b && (a.preview = `url(${b})`), a.initPreview = !0, dataHand.saveData(), dataHand.renderTiles(), this.initPreview()
-    //     })
-    // }
-
     //总入口
     init(){
         dataHand.renderTiles(),
         this.initHandlers()
-        console.log(window.screen.width, window.screen.availWidth, document.body.clientWidth)
+        // console.log(window.screen.width, window.screen.availWidth, document.body.clientWidth)
         // this.initPreview()
     }
 }

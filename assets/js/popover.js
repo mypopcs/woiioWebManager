@@ -6,11 +6,11 @@ const elById = (IdName) => document.getElementById(IdName);
 class popover {
     //添加新网站
     AddDialogShow(){
-        $('#add_dialog').addClass('show')
+        $('#add_dialog').addClass('is-active')
     }
     //隐藏弹窗
     dialogHidden(){
-        $('.cancel-btn').closest('.modal').removeClass('show')
+        $('.cancel-btn').closest('.modal').removeClass('is-active')
     }
     /*---------------编辑弹窗-----------------*/
     showEditModal(a) {
@@ -38,10 +38,9 @@ class popover {
         event.stopPropagation()
         //获得具体哪条书签的位置编号
         const b = $(event.target).closest('.col-xl-4').index();
-        console.log(b)
         //将位置编号赋予弹出窗的一个值
         $('#remove_confire_btn').attr('data-item-id', b)
-        $('#delete_confire_dialog').addClass('show')
+        $('#delete_confire_dialog').addClass('is-active')
         //隐藏其他
         dataHand.bodyClick()
     }
