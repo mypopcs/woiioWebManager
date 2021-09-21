@@ -4,7 +4,6 @@
    "manifest_version": 2,
    "default_locale": "en",
    "description": "__MSG_description__",
-   "update_url": "https://clients2.google.com/service/update2/crx",
    "icons": {
        "64": "/assets/img/64.png"
    },
@@ -31,9 +30,5 @@
    "browser_action":{
       "default_icon":"/assets/img/64.png",
       "default_title": "__MSG_description__"
-   },
-   "web_accessible_resources":[
-      "https://fonts.googleapis.com/icon?family=Material+Icons",
-      "../woiioWebManager/data/bookmarks.json"
-   ]
+   }
 }

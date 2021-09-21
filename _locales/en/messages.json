@@ -1,8 +1,11 @@
 {
    "description": {
-      "message": "Speed Dial allows you to add and manage bookmarks in the New Tab page."
+      "message": "Woiio Website Manger allows you to add and manage bookmarks in the New Tab page."
    },
    "name": {
-      "message": "Speed Dial"
+      "message": "Woiio Website Manger"
+   },
+   "webTitle": {
+      "message": "Woiio web manager - Homepage"
    }
 }

@@ -1,12 +1,12 @@
 import pubModel from "./public.js";
 import dataHand from "./dataMode.js";
-import DomPopover from "./popover.js"
+import DomPopover from "./popover.js";
+import i18nMod from "./libs/i18n.js"
 
 //获取 ID 的公共方法
 const elById = (IdName) => document.getElementById(IdName);
 
 class newTab {
-
     //方法激活
     initHandlers(){
         const doc = $(document.body)
@@ -26,6 +26,7 @@ class newTab {
         this.initHandlers()
         // console.log(window.screen.width, window.screen.availWidth, document.body.clientWidth)
         // this.initPreview()
+        i18nMod.doI18n()
     }
 }
 var index = new newTab;
